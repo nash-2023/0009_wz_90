@@ -1,12 +1,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.wz95_geolocator">
+    <!-- permissions for geolocator -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <!-- permissions for geolocator -->
    <application
         android:label="wz95_geolocator"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <!-- for google maps -->
+        <meta-data 
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCaiM2k6SMWSqmpE14IDII3Duh16mIJ6XE"/>
+        <!-- for google maps -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
