@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Fancy Dialog Example',
       theme: ThemeData.light(),
-      home: const AweDial(title: 'Fancy Dialog Example'),
+      // home: const AweDial(title: 'Fancy Dialog Example'),
     );
   }
 }

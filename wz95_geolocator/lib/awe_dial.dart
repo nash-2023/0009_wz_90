@@ -1,3 +1,10 @@
+/**
+ * Installing :
+ * first run this code :  flutter pub add awesome_dialog
+ * then import the package 
+ * then Enjoy
+ */
+
 import 'package:flutter/material.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 
