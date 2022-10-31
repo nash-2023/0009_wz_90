@@ -1,25 +1,61 @@
 /**
- * wz 102
+ * wz 103 - Markers
  */
 
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 
-class GoogMps2 extends StatefulWidget {
-  const GoogMps2({super.key, required this.title});
+class GoogMps3 extends StatefulWidget {
+  const GoogMps3({super.key, required this.title});
   final String title;
 
   @override
-  State<GoogMps2> createState() => _GoogMps2State();
+  State<GoogMps3> createState() => _GoogMps3State();
 }
 
-class _GoogMps2State extends State<GoogMps2> {
+class _GoogMps3State extends State<GoogMps3> {
   Completer<GoogleMapController> _controller = Completer();
   GoogleMapController? gmc; //wz102
+  Set<Marker> myMarker = {
+    Marker(
+      markerId: MarkerId("1"),
+      infoWindow: InfoWindow(title: "MACCA"),
+      position: LatLng(21.422581, 39.826145),
+    ),
+    Marker(
+      markerId: MarkerId("2"),
+      infoWindow: InfoWindow(title: "1"),
+      position: LatLng(30.422581, 30.826145),
+    ),
+    Marker(
+      markerId: MarkerId("3"),
+      infoWindow: InfoWindow(title: "1"),
+      position: LatLng(40.422581, 40.826145),
+    ),
+    Marker(
+      markerId: MarkerId("4"),
+      infoWindow: InfoWindow(
+        title: "MY Home",
+        onTap: () {
+          print("info marker");
+        },
+      ),
+      position: LatLng(29.992582689490565, 31.13217723698732),
+      onTap: () {
+        print("home marker");
+      },
+      draggable: true,
+      onDragEnd: (LatLng x) {
+        print(x);
+      },
+      // icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hweOurf),
+    ),
+  };
 
   Position? x;
   CameraPosition? _kGooglePlex;
@@ -77,6 +113,10 @@ class _GoogMps2State extends State<GoogMps2> {
                   width: 500.0,
                   height: 500.0,
                   child: GoogleMap(
+                    onTap: (x) {
+                      print(x);
+                    },
+                    markers: myMarker,
                     mapType: MapType.hybrid,
                     initialCameraPosition: _kGooglePlex!,
                     onMapCreated: (GoogleMapController controller) {
