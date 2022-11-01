@@ -45,7 +45,7 @@ class _GoogMps3State extends State<GoogMps3> {
           print("info marker");
         },
       ),
-      position: LatLng(29.992582689490565, 31.13217723698732),
+      position: LatLng(30.00810985181297, 31.122649722558204),
       onTap: () {
         print("home marker");
       },
@@ -114,7 +114,17 @@ class _GoogMps3State extends State<GoogMps3> {
                   height: 500.0,
                   child: GoogleMap(
                     onTap: (x) {
-                      print(x);
+                      // print(x);
+                      print(myMarker.length);
+                      myMarker.add(
+                        Marker(
+                          markerId: MarkerId((myMarker.length + 2).toString()),
+                          infoWindow: InfoWindow(
+                              title: (myMarker.length + 1).toString()),
+                          position: x,
+                        ),
+                      );
+                      setState(() {});
                     },
                     markers: myMarker,
                     mapType: MapType.hybrid,
