@@ -53,7 +53,7 @@ class _GoogMps3State extends State<GoogMps3> {
       onDragEnd: (LatLng x) {
         print(x);
       },
-      // icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hweOurf),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
     ),
   };
 
@@ -115,7 +115,7 @@ class _GoogMps3State extends State<GoogMps3> {
                   child: GoogleMap(
                     onTap: (x) {
                       // print(x);
-                      print(myMarker.length);
+                      // print(myMarker.length);
                       myMarker.add(
                         Marker(
                           markerId: MarkerId((myMarker.length + 2).toString()),
