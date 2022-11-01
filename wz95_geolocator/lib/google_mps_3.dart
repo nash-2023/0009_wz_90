@@ -3,6 +3,7 @@
  */
 
 import 'dart:async';
+import 'dart:html';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -21,31 +22,18 @@ class GoogMps3 extends StatefulWidget {
 class _GoogMps3State extends State<GoogMps3> {
   Completer<GoogleMapController> _controller = Completer();
   GoogleMapController? gmc; //wz102
-  Set<Marker> myMarker = {
-    Marker(
-      markerId: MarkerId("1"),
-      infoWindow: InfoWindow(title: "MACCA"),
-      position: LatLng(21.422581, 39.826145),
-    ),
-    Marker(
-      markerId: MarkerId("2"),
-      infoWindow: InfoWindow(title: "1"),
-      position: LatLng(30.422581, 30.826145),
-    ),
-    Marker(
-      markerId: MarkerId("3"),
-      infoWindow: InfoWindow(title: "1"),
-      position: LatLng(40.422581, 40.826145),
-    ),
-    Marker(
+  setMarkerCustomerImage() async {
+    x = await Geolocator.getCurrentPosition().then((value) => value);
+    // print(myMarker.length);
+    myMarker.add(Marker(
       markerId: MarkerId("4"),
       infoWindow: InfoWindow(
-        title: "MY Home",
+        title: "Here",
         onTap: () {
           print("info marker");
         },
       ),
-      position: LatLng(30.00810985181297, 31.122649722558204),
+      position: LatLng(x!.latitude, x!.longitude),
       onTap: () {
         print("home marker");
       },
@@ -53,7 +41,36 @@ class _GoogMps3State extends State<GoogMps3> {
       onDragEnd: (LatLng x) {
         print(x);
       },
-      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+      /*
+      icon: await BitmapDescriptor.defaultMarkerWithHue(
+          BitmapDescriptor.hueAzure),
+      */
+      /*
+      icon: await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration.empty,
+        "assets/icons/icon.png",
+      ),
+      */
+    ));
+    setState(() {});
+    // print(myMarker.length);
+  }
+
+  Set<Marker> myMarker = {
+    Marker(
+      markerId: MarkerId("1"),
+      infoWindow: InfoWindow(title: "1"),
+      position: LatLng(21.422581, 39.826145),
+    ),
+    Marker(
+      markerId: MarkerId("2"),
+      infoWindow: InfoWindow(title: "2"),
+      position: LatLng(30.422581, 30.826145),
+    ),
+    Marker(
+      markerId: MarkerId("3"),
+      infoWindow: InfoWindow(title: "3"),
+      position: LatLng(40.422581, 40.826145),
     ),
   };
 
@@ -92,6 +109,7 @@ class _GoogMps3State extends State<GoogMps3> {
     // TODO: implement initState
     getPermission();
     getPosition();
+    // setMarkerCustomerImage();
     super.initState();
   }
 
@@ -101,45 +119,60 @@ class _GoogMps3State extends State<GoogMps3> {
       appBar: AppBar(
         title: Text(widget.title),
         centerTitle: true,
+        actions: [
+          IconButton(onPressed: () {}, icon: Icon(Icons.map)),
+          IconButton(onPressed: () {}, icon: Icon(Icons.location_city)),
+        ],
       ),
       body: Column(
         // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          (_kGooglePlex == null)
-              ? CircularProgressIndicator()
-              : Container(
-                  margin: EdgeInsets.all(20.0),
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.all(20.0),
+                  // margin: EdgeInsets.all(20.0),
                   width: 500.0,
                   height: 500.0,
-                  child: GoogleMap(
-                    onTap: (x) {
-                      // print(x);
-                      // print(myMarker.length);
-                      myMarker.add(
-                        Marker(
-                          markerId: MarkerId((myMarker.length + 2).toString()),
-                          infoWindow: InfoWindow(
-                              title: (myMarker.length + 1).toString()),
-                          position: x,
+                  child: (_kGooglePlex == null)
+                      ? CircularProgressIndicator()
+                      : GoogleMap(
+                          onTap: (x) {
+                            // myMarker.remove(Marker(markerId: MarkerId("1")));  // not working
+                            myMarker.add(
+                              Marker(
+                                markerId:
+                                    MarkerId((myMarker.length + 2).toString()),
+                                // MarkerId("1"),
+                                infoWindow: InfoWindow(
+                                    title: (myMarker.length + 1).toString()),
+                                position: x,
+                              ),
+                            );
+                            setState(() {});
+                          },
+                          markers: myMarker,
+                          mapType: MapType.normal,
+                          initialCameraPosition: _kGooglePlex!,
+                          onMapCreated: (GoogleMapController controller) {
+                            _controller.complete(controller);
+                            gmc = controller; //wz102
+                          },
                         ),
-                      );
-                      setState(() {});
-                    },
-                    markers: myMarker,
-                    mapType: MapType.hybrid,
-                    initialCameraPosition: _kGooglePlex!,
-                    onMapCreated: (GoogleMapController controller) {
-                      _controller.complete(controller);
-                      gmc = controller; //wz102
-                    },
-                  ),
                 ),
+              ),
+            ],
+          ),
           ElevatedButton(
             onPressed: () async {
               print(await getPosition());
             },
             child: Text("show lat long"),
+          ),
+          SizedBox(
+            height: 10.0,
           ),
           ElevatedButton(
             onPressed: () async {
@@ -179,9 +212,9 @@ class _GoogMps3State extends State<GoogMps3> {
     await gmc!.animateCamera(CameraUpdate.newCameraPosition(_kMecc));
     // await gmc!.animateCamera(CameraUpdate.newLatLng(_ltlngMecc));
     var p2 = await gmc!.getLatLng(ScreenCoordinate(x: 250, y: 250));
-    print("${p2.latitude} , ${p2.longitude}");
+    // print("${p2.latitude} , ${p2.longitude}");
     var p3 = await gmc!.getZoomLevel();
-    print(p3);
+    // print(p3);
   }
 }
 
