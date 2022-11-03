@@ -7,6 +7,7 @@ import 'package:wz95_geolocator/google_mps.dart';
 import 'package:wz95_geolocator/google_mps_2.dart';
 import 'package:wz95_geolocator/google_mps_3.dart';
 import 'package:wz95_geolocator/google_mps_4.dart';
+import 'package:wz95_geolocator/google_mps_5.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
       // home: GoogMps(title: 'Google Maps'),
       // home: GoogMps2(title: 'Google Maps'),
       // home: GoogMps3(title: 'Google Maps'),
-      home: GoogMps4(title: 'Google Maps'),
+      // home: GoogMps4(title: 'Google Maps'),
+      home: GoogMps5(title: 'Google Maps'),
     );
   }
 }
